@@ -67,6 +67,60 @@ docker buildx bake --file devcontainer-bake.hcl [--file arg for each desired par
 
 ## Dockerfile partials
 
+### docker-client
+
+The docker-client Dockerfile defines steps to install the [Docker CLI client](https://docs.docker.com/reference/cli/docker/) in a Docker image. It copies the CLI executable from the [Docker docker image](https://hub.docker.com/_/docker).
+
+#### docker-client Dockerfile usage
+
+The recommended usage is via the [Devcontainer bake files](#devcontainer-bake-files). It is also possible to use the Dockerfile partial directly.
+
+Use a [Bake](https://docs.docker.com/reference/cli/docker/buildx/bake/) config file, and set the `base_context` context as the image to which to apply the docker-client installation. For example:
+
+```hcl
+target "base" {
+  dockerfile = "Dockerfile"
+}
+
+target "default" {
+  context = "https://github.com/rcwbr/dockerfile_partials.git#0.1.0"
+  dockerfile = "docker-client/Dockerfile"
+  contexts = {
+    base_context = "target:base"
+  }
+}
+```
+
+The args accepted by the Dockerfile include:
+
+| Variable | Required | Default | Effect |
+| --- | --- | --- | --- |
+| `DOCKER_GID` | &cross | `800` | Group ID of the docker user group |
+| `USER` | &cross; | `"root"` | Username to grant access to the Docker daemon |
+
+
+#### docker-client bake file usage
+
+The docker-client partial contains a devcontainer bake config file. See [Devcontainer bake files](#devcontainer-bake-files) for general usage. The docker-client bake config file accepts the following inputs:
+
+| Variable | Required | Default | Effect |
+| --- | --- | --- | --- |
+| `DOCKER_GID` | &cross | `800` | See [docker-client Dockerfile](#docker-client-dockerfile-usage) |
+| `USER` | &cross; | `"root"` | See [docker-client Dockerfile](#docker-client-dockerfile-usage) |
+
+#### docker-client devcontainer usage
+
+The docker-client partial installs only the client CLI by default. To leverage the container host's Docker daemon, the relevant socket must be mounted at runtime. In a [`devcontainer.json`](https://containers.dev/implementors/json_reference/), the following content must be included:
+
+```jsonc
+{
+  "image": "[image including docker-client layers]",
+  "mounts": [
+    { "source": "/var/run/docker.sock", "target": "/var/run/docker.sock", "type": "bind" }
+  ]
+}
+```
+
 ### pre-commit
 
 The pre-commit Dockerfile defines steps to install [pre-commit](https://pre-commit.com/) and install the hooks required by a repo configuration.
