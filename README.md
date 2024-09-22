@@ -229,7 +229,7 @@ The useradd partial contains a devcontainer bake config file. See [Devcontainer 
 | Variable | Required | Default | Effect |
 | --- | --- | --- | --- |
 | `USER` | &cross; | `"root"` | See [useradd Dockerfile](#useradd-dockerfile-usage) |
-| `EXTRA_GID_ARGS` | &cross; | `""` | See [useradd Dockerfile](#useradd-dockerfile-usage) |
+| `EXTRA_GID_ARGS` | &cross; | `""` or `DOCKER_CLIENT_EXTRA_GID_ARGS` if defined | See [useradd Dockerfile](#useradd-dockerfile-usage) |
 | `UID` | &cross; | `0` | Maps to `USER_UID`. See [useradd Dockerfile](#useradd-dockerfile-usage) |
 | `GID` | &cross; | `${UID}` | Maps to `USER_GID`.See [useradd Dockerfile](#useradd-dockerfile-usage) |
 

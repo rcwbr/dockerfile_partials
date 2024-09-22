@@ -1,5 +1,5 @@
 variable "EXTRA_GID_ARGS" {
-  default = ""
+  default = try(DOCKER_CLIENT_EXTRA_GID_ARGS, "")
 }
 variable "USER" {
   default = "root"
