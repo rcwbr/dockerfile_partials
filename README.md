@@ -264,3 +264,17 @@ variable "GID" {
 ```
 
 If exposed as variables, the appropriate values for Codespaces use must be [set as secrets](https://docs.github.com/en/codespaces/managing-your-codespaces/managing-your-account-specific-secrets-for-github-codespaces#adding-a-secret) so as to be available during Codespace provisioning.
+
+## Contributing
+
+### devcontainer
+
+This repo contains a [devcontainer definition](https://containers.dev/) in the `.devcontainer` folder. It leverages the [devcontainer cache build tool](https://github.com/rcwbr/devcontainer-cache-build) and the Dockerfile partials defined in this repo.
+
+#### devcontainer basic usage
+
+The [devcontainer cache build tool](https://github.com/rcwbr/devcontainer-cache-build) requires authentication to the GitHub package registry, as a token stored as `DOCKERFILE_PARTIALS_DEVCONTAINER_INITIALIZE` (see [instructions](https://github.com/rcwbr/devcontainer-cache-build/tree/main?tab=readme-ov-file#initialize-script-github-container-registry-setup)).
+
+#### devcontainer Codespaces usage
+
+For use with Codespaces, the `DOCKERFILE_PARTIALS_DEVCONTAINER_INITIALIZE` token (see [devcontainer basic usage](#devcontainer-basic-usage)) must be stored as a Codespaces secret (see [instructions](https://github.com/rcwbr/devcontainer-cache-build/tree/main?tab=readme-ov-file#initialize-script-github-container-registry-setup)), as must values for `USER`, and `UID` (see [useradd Codespaces usage](#useradd-codespaces-usage)).
