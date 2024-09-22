@@ -67,6 +67,60 @@ docker buildx bake --file devcontainer-bake.hcl [--file arg for each desired par
 
 ## Dockerfile partials
 
+### docker-client
+
+The docker-client Dockerfile defines steps to install the [Docker CLI client](https://docs.docker.com/reference/cli/docker/) in a Docker image. It copies the CLI executable from the [Docker docker image](https://hub.docker.com/_/docker).
+
+#### docker-client Dockerfile usage
+
+The recommended usage is via the [Devcontainer bake files](#devcontainer-bake-files). It is also possible to use the Dockerfile partial directly.
+
+Use a [Bake](https://docs.docker.com/reference/cli/docker/buildx/bake/) config file, and set the `base_context` context as the image to which to apply the docker-client installation. For example:
+
+```hcl
+target "base" {
+  dockerfile = "Dockerfile"
+}
+
+target "default" {
+  context = "https://github.com/rcwbr/dockerfile_partials.git#0.1.0"
+  dockerfile = "docker-client/Dockerfile"
+  contexts = {
+    base_context = "target:base"
+  }
+}
+```
+
+The args accepted by the Dockerfile include:
+
+| Variable | Required | Default | Effect |
+| --- | --- | --- | --- |
+| `DOCKER_GID` | &cross | `800` | Group ID of the docker user group |
+| `USER` | &cross; | `"root"` | Username to grant access to the Docker daemon |
+
+
+#### docker-client bake file usage
+
+The docker-client partial contains a devcontainer bake config file. See [Devcontainer bake files](#devcontainer-bake-files) for general usage. The docker-client bake config file accepts the following inputs:
+
+| Variable | Required | Default | Effect |
+| --- | --- | --- | --- |
+| `DOCKER_GID` | &cross | `800` | See [docker-client Dockerfile](#docker-client-dockerfile-usage) |
+| `USER` | &cross; | `"root"` | See [docker-client Dockerfile](#docker-client-dockerfile-usage) |
+
+#### docker-client devcontainer usage
+
+The docker-client partial installs only the client CLI by default. To leverage the container host's Docker daemon, the relevant socket must be mounted at runtime. In a [`devcontainer.json`](https://containers.dev/implementors/json_reference/), the following content must be included:
+
+```jsonc
+{
+  "image": "[image including docker-client layers]",
+  "mounts": [
+    { "source": "/var/run/docker.sock", "target": "/var/run/docker.sock", "type": "bind" }
+  ]
+}
+```
+
 ### pre-commit
 
 The pre-commit Dockerfile defines steps to install [pre-commit](https://pre-commit.com/) and install the hooks required by a repo configuration.
@@ -109,7 +163,7 @@ The pre-commit partial contains a devcontainer bake config file. See [Devcontain
 | --- | --- | --- | --- |
 | `USER` | &cross; | `"root"` | See [pre-commit Dockerfile](#pre-commit-dockerfile-usage) |
 
-#### Codespaces usage
+#### pre-commit Codespaces usage
 
 For use in [Codespaces](https://github.com/features/codespaces) devcontainers, the build args must be set to the following values:
 
@@ -123,7 +177,7 @@ variable "USER" {
 }
 ...
   args = {
-    USERNAME = "${USER}"
+    USER = "${USER}"
   }
 ...
 ```
@@ -138,7 +192,7 @@ The useradd Dockerfile defines steps to add a user to the image, with configurab
 
 The recommended usage is via the [Devcontainer bake files](#devcontainer-bake-files). It is also possible to use the Dockerfile partial directly.
 
-Use a [Bake](https://docs.docker.com/reference/cli/docker/buildx/bake/) config file, and set the `base_context` context as the image to which to apply the user addition. Additionally, provide appropriate values for the `USERNAME`, `USER_UID`, and `USER_GID` build args. For example:
+Use a [Bake](https://docs.docker.com/reference/cli/docker/buildx/bake/) config file, and set the `base_context` context as the image to which to apply the user addition. Additionally, provide appropriate values for the `USER`, `USER_UID`, and `USER_GID` build args. For example:
 
 ```hcl
 target "base" {
@@ -152,7 +206,7 @@ target "default" {
     base_context = "target:base"
   }
   args = {
-    USERNAME = "myuser"
+    USER = "myuser"
     USER_UID = 1000
     USER_GID = 1000
   }
@@ -163,7 +217,8 @@ The args accepted by the Dockerfile include:
 
 | Variable | Required | Default | Effect |
 | --- | --- | --- | --- |
-| `USERNAME` | &check; | N/A | Username of the user to create |
+| `USER` | &check; | N/A | Username of the user to create |
+| `EXTRA_GID_ARGS` | &cross; | `""` | Extra `--gid [id]` args to apply to the useradd command |
 | `USER_UID` | &cross; | `1000` | User UID for the user to create |
 | `USER_GID` | &cross; | `$USER_UID` | User GID for the user to create |
 
@@ -174,6 +229,7 @@ The useradd partial contains a devcontainer bake config file. See [Devcontainer 
 | Variable | Required | Default | Effect |
 | --- | --- | --- | --- |
 | `USER` | &cross; | `"root"` | See [useradd Dockerfile](#useradd-dockerfile-usage) |
+| `EXTRA_GID_ARGS` | &cross; | `""` | See [useradd Dockerfile](#useradd-dockerfile-usage) |
 | `UID` | &cross; | `0` | See [useradd Dockerfile](#useradd-dockerfile-usage) |
 | `GID` | &cross; | `${UID}` | See [useradd Dockerfile](#useradd-dockerfile-usage) |
 
@@ -181,7 +237,7 @@ The useradd partial contains a devcontainer bake config file. See [Devcontainer 
 
 For use in [Codespaces](https://github.com/features/codespaces) devcontainers, the build args must be set to the following values:
 
-- `USERNAME`: `codespace`
+- `USER`: `codespace`
 - `USER_UID`: `1000`
 - `USER_GID`: `1000`
 
@@ -201,7 +257,7 @@ variable "GID" {
 
 ...
   args = {
-    USERNAME = "${USER}"
+    USER = "${USER}"
     USER_UID = "${UID}"
     USER_GID = "${GID}"
   }

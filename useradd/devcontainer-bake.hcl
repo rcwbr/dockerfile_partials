@@ -1,3 +1,6 @@
+variable "EXTRA_GID_ARGS" {
+  default = ""
+}
 variable "USER" {
   default = "root"
 }
@@ -12,7 +15,8 @@ variable "GID" {
 target "useradd" {
   dockerfile = "useradd/Dockerfile"
   args = {
-    USERNAME = "${USER}"
+    EXTRA_GID_ARGS = "${EXTRA_GID_ARGS}"
+    USER = "${USER}"
     USER_UID = "${UID}"
     USER_GID = "${GID}"
   }
