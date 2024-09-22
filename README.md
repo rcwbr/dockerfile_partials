@@ -164,6 +164,7 @@ The args accepted by the Dockerfile include:
 | Variable | Required | Default | Effect |
 | --- | --- | --- | --- |
 | `USER` | &check; | N/A | Username of the user to create |
+| `EXTRA_GID_ARGS` | &cross; | `""` | Extra `--gid [id]` args to apply to the useradd command |
 | `USER_UID` | &cross; | `1000` | User UID for the user to create |
 | `USER_GID` | &cross; | `$USER_UID` | User GID for the user to create |
 
@@ -174,6 +175,7 @@ The useradd partial contains a devcontainer bake config file. See [Devcontainer 
 | Variable | Required | Default | Effect |
 | --- | --- | --- | --- |
 | `USER` | &cross; | `"root"` | See [useradd Dockerfile](#useradd-dockerfile-usage) |
+| `EXTRA_GID_ARGS` | &cross; | `""` | See [useradd Dockerfile](#useradd-dockerfile-usage) |
 | `UID` | &cross; | `0` | See [useradd Dockerfile](#useradd-dockerfile-usage) |
 | `GID` | &cross; | `${UID}` | See [useradd Dockerfile](#useradd-dockerfile-usage) |
 
