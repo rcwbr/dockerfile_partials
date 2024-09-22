@@ -230,16 +230,15 @@ The useradd partial contains a devcontainer bake config file. See [Devcontainer 
 | --- | --- | --- | --- |
 | `USER` | &cross; | `"root"` | See [useradd Dockerfile](#useradd-dockerfile-usage) |
 | `EXTRA_GID_ARGS` | &cross; | `""` | See [useradd Dockerfile](#useradd-dockerfile-usage) |
-| `UID` | &cross; | `0` | See [useradd Dockerfile](#useradd-dockerfile-usage) |
-| `GID` | &cross; | `${UID}` | See [useradd Dockerfile](#useradd-dockerfile-usage) |
+| `UID` | &cross; | `0` | Maps to `USER_UID`. See [useradd Dockerfile](#useradd-dockerfile-usage) |
+| `GID` | &cross; | `${UID}` | Maps to `USER_GID`.See [useradd Dockerfile](#useradd-dockerfile-usage) |
 
 #### useradd Codespaces usage
 
 For use in [Codespaces](https://github.com/features/codespaces) devcontainers, the build args must be set to the following values:
 
 - `USER`: `codespace`
-- `USER_UID`: `1000`
-- `USER_GID`: `1000`
+- `UID`: `1000`
 
 These values may be hard-coded in the Bake config file, or may be exposed as variables for compatibility with local environments.
 
