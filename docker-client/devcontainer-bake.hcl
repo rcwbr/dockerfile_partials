@@ -1,8 +1,8 @@
 variable "DOCKER_GID" {
   default = "800"
 }
-// Set EXTRA_GID_ARGS to include a Docker group in case the useradd partial will be included
-variable "EXTRA_GID_ARGS" {
+// Define an extra GID arg with the Docker group ID in case the useradd partial will be included
+variable "DOCKER_CLIENT_EXTRA_GID_ARGS" {
   default = "--gid ${DOCKER_GID}"
 }
 
