@@ -12,7 +12,7 @@ variable "GID" {
 target "useradd" {
   dockerfile = "useradd/Dockerfile"
   args = {
-    USERNAME = "${USER}"
+    USER = "${USER}"
     USER_UID = "${UID}"
     USER_GID = "${GID}"
   }

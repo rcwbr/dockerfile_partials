@@ -109,7 +109,7 @@ The pre-commit partial contains a devcontainer bake config file. See [Devcontain
 | --- | --- | --- | --- |
 | `USER` | &cross; | `"root"` | See [pre-commit Dockerfile](#pre-commit-dockerfile-usage) |
 
-#### Codespaces usage
+#### pre-commit Codespaces usage
 
 For use in [Codespaces](https://github.com/features/codespaces) devcontainers, the build args must be set to the following values:
 
@@ -123,7 +123,7 @@ variable "USER" {
 }
 ...
   args = {
-    USERNAME = "${USER}"
+    USER = "${USER}"
   }
 ...
 ```
@@ -138,7 +138,7 @@ The useradd Dockerfile defines steps to add a user to the image, with configurab
 
 The recommended usage is via the [Devcontainer bake files](#devcontainer-bake-files). It is also possible to use the Dockerfile partial directly.
 
-Use a [Bake](https://docs.docker.com/reference/cli/docker/buildx/bake/) config file, and set the `base_context` context as the image to which to apply the user addition. Additionally, provide appropriate values for the `USERNAME`, `USER_UID`, and `USER_GID` build args. For example:
+Use a [Bake](https://docs.docker.com/reference/cli/docker/buildx/bake/) config file, and set the `base_context` context as the image to which to apply the user addition. Additionally, provide appropriate values for the `USER`, `USER_UID`, and `USER_GID` build args. For example:
 
 ```hcl
 target "base" {
@@ -152,7 +152,7 @@ target "default" {
     base_context = "target:base"
   }
   args = {
-    USERNAME = "myuser"
+    USER = "myuser"
     USER_UID = 1000
     USER_GID = 1000
   }
@@ -163,7 +163,7 @@ The args accepted by the Dockerfile include:
 
 | Variable | Required | Default | Effect |
 | --- | --- | --- | --- |
-| `USERNAME` | &check; | N/A | Username of the user to create |
+| `USER` | &check; | N/A | Username of the user to create |
 | `USER_UID` | &cross; | `1000` | User UID for the user to create |
 | `USER_GID` | &cross; | `$USER_UID` | User GID for the user to create |
 
@@ -181,7 +181,7 @@ The useradd partial contains a devcontainer bake config file. See [Devcontainer 
 
 For use in [Codespaces](https://github.com/features/codespaces) devcontainers, the build args must be set to the following values:
 
-- `USERNAME`: `codespace`
+- `USER`: `codespace`
 - `USER_UID`: `1000`
 - `USER_GID`: `1000`
 
@@ -201,7 +201,7 @@ variable "GID" {
 
 ...
   args = {
-    USERNAME = "${USER}"
+    USER = "${USER}"
     USER_UID = "${UID}"
     USER_GID = "${GID}"
   }
