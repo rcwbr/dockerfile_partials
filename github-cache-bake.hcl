@@ -34,39 +34,24 @@ variable "IMAGE_REF" {
   default = "${REGISTRY}${IMAGE_NAME}"
 }
 
-variable "VARIANTS" {
-  default = [
-    ""
-  ]
-}
-
-target "image" {
-  matrix = {
-    variant = VARIANTS
-  }
-  name = "${IMAGE_NAME}${variant}"
-  dockerfile = "${variant}/Dockerfile"
+target "default" {
+  name = "${IMAGE_NAME}"
+  dockerfile = "Dockerfile"
   cache-from = [
     // Always pull cache from main
-    "type=registry,ref=${IMAGE_REF}${variant}-cache:main",
-    "type=registry,ref=${IMAGE_REF}${variant}-cache:${VERSION}"
+    "type=registry,ref=${IMAGE_REF}-cache:main",
+    "type=registry,ref=${IMAGE_REF}-cache:${VERSION}"
   ]
   cache-to = [
-    "type=registry,ref=${IMAGE_REF}${variant}-cache:${VERSION}"
+    "type=registry,ref=${IMAGE_REF}-cache:${VERSION}"
   ]
   output = [
-    "type=docker,name=${IMAGE_NAME}${variant}",
+    "type=docker,name=${IMAGE_NAME}",
     // If running for an unprotected ref (e.g. PRs), append the commit SHA
     (
       "${GITHUB_REF_PROTECTED}" == "true"
-      ? "type=registry,name=${IMAGE_REF}${variant}:${VERSION}"
-      : "type=registry,name=${IMAGE_REF}${variant}:${VERSION}-${GITHUB_SHA}"
+      ? "type=registry,name=${IMAGE_REF}:${VERSION}"
+      : "type=registry,name=${IMAGE_REF}:${VERSION}-${GITHUB_SHA}"
     )
-  ]
-}
-
-group "default" {
-  targets = [
-    for variant in VARIANTS: "${IMAGE_REF}${variant}"
   ]
 }
