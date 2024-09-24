@@ -35,7 +35,6 @@ variable "IMAGE_REF" {
 }
 
 target "default" {
-  name = "${IMAGE_NAME}"
   dockerfile = "Dockerfile"
   context = BAKE_CMD_CONTEXT
   cache-from = [
