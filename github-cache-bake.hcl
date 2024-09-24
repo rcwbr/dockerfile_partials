@@ -37,6 +37,7 @@ variable "IMAGE_REF" {
 target "default" {
   name = "${IMAGE_NAME}"
   dockerfile = "Dockerfile"
+  context = BAKE_CMD_CONTEXT
   cache-from = [
     // Always pull cache from main
     "type=registry,ref=${IMAGE_REF}-cache:main",
