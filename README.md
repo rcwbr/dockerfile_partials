@@ -2,6 +2,49 @@
 
 Dockerfile partials and devcontainer [bake](https://docs.docker.com/build/bake/introduction/) files for re-use across multiple applications.
 
+## GitHub cache bake file
+
+The `github-cache-bake.hcl` [bake](https://docs.docker.com/build/bake/introduction/) config file provides a basic bake configuration for use in repos that produce container images using [GitHub Actions](https://docs.github.com/en/actions) and targeted to the [GitHub container registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry).
+
+The file configures [registry outputs](https://docs.docker.com/reference/cli/docker/buildx/build/#registry) and registry [cache-to](https://docs.docker.com/reference/cli/docker/buildx/build/#cache-to) and [cache-from](https://docs.docker.com/reference/cli/docker/buildx/build/#cache-from), all directed to the specified registry. It infers naming and tagging config for the image based on the context (local vs. CI, protected vs. development versions), such that while each context can push both image and cache content, development and local contexts do not collide with each other or with releases.
+
+### GitHub cache bake file usage
+
+The configuration of the bake file requires the use of a [Docker builder with the docker-container driver](https://docs.docker.com/build/builders/drivers/docker-container/). To set one up, use the following command:
+
+```bash
+docker builder create --use --bootstrap --driver docker-container
+```
+
+The bake file requires at least `IMAGE_NAME` variable to be set, and `REGISTRY` should nearly always be overridden (see [GitHub cache bake file inputs](#github-cache-bake-file-inputs)). Export them:
+
+```bash
+REGISTRY=ghcr.io/[your account]/
+IMAGE_NAME=[your repo/image name]
+```
+
+To build your image using the GitHub cache bake file via [remote bake definition](https://docs.docker.com/build/bake/remote-definition/), run this command:
+
+```bash
+'docker buildx bake --file github-cache-bake.hcl https://github.com/rcwbr/dockerfile-partials.git#0.1.0'
+```
+
+### GitHub cache bake file inputs
+
+The GitHub cache bake file can be configured using the following inputs:
+
+| Variable | Required | Default | Effect |
+| --- | --- | --- | --- |
+| `IMAGE_NAME` | &check; | N/A | The name of the image, specifically not fully-qualified. This is the reference loaded to the host Docker daemon. |
+| `GITHUB_REF_NAME` | &cross; | `"local-${HOST}"` | The human-friendly ref name for the GitHub context. Used to inform the image tag. |
+| `GITHUB_REF_PROTECTED` | &cross; | `"false"` | Indicates if the CI context is for a protected (vs. development) ref. Indicates whether to append a unique version ID to the tag |
+| `GITHUB_SHA` | &cross; | `"local"` | The commit SHA of the CI context. Appended to tags after `VERSION` unless `GITHUB_REF_PROTECTED` is true. |
+| `HOST` | &cross; | `$HOSTNAME` | The name of the host device. Used to qualify image and cache names and avoid collisions between users. |
+| `HOSTNAME` | &cross; | N/A | The name of the host device, for some OSs. |
+| `REGISTRY` | &cross; | `"ghcr.io/"` | The registry to which to push remote content. Generally, `"ghcr.io/[user/org]/"`. |
+| `IMAGE_REF` | &cross; | `"${REGISTRY}${IMAGE_NAME}"` | The fully-qualified image name used as the base for version and cache references. |
+| `VERSION` | &cross; | `${GITHUB_REF_NAME}`, sanitized | This is the default tag for the image. |
+
 ## Devcontainer bake files
 
 Each Dockerfile partial is accompanied by a `devcontainer-bake.hcl` [bake](https://docs.docker.com/build/bake/introduction/) config file, and a common bake file is defined at the repository root. These are intended to make composition of devcontainer image contents trivial. They are designed to work with the [devcontainer-cache-build initialize script](https://github.com/rcwbr/devcontainer-cache-build/tree/main?tab=readme-ov-file#initialize-script).
@@ -95,7 +138,7 @@ The args accepted by the Dockerfile include:
 
 | Variable | Required | Default | Effect |
 | --- | --- | --- | --- |
-| `DOCKER_GID` | &cross | `800` | Group ID of the docker user group |
+| `DOCKER_GID` | &cross; | `800` | Group ID of the docker user group |
 | `USER` | &cross; | `"root"` | Username to grant access to the Docker daemon |
 
 
@@ -105,7 +148,7 @@ The docker-client partial contains a devcontainer bake config file. See [Devcont
 
 | Variable | Required | Default | Effect |
 | --- | --- | --- | --- |
-| `DOCKER_GID` | &cross | `800` | See [docker-client Dockerfile](#docker-client-dockerfile-usage) |
+| `DOCKER_GID` | &cross; | `800` | See [docker-client Dockerfile](#docker-client-dockerfile-usage) |
 | `USER` | &cross; | `"root"` | See [docker-client Dockerfile](#docker-client-dockerfile-usage) |
 
 #### docker-client devcontainer usage
