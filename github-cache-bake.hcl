@@ -9,6 +9,10 @@ variable "HOST" {
 variable "GITHUB_REF_PROTECTED" {
   default = "false"
 }
+variable "GITHUB_REF_TYPE" {
+  // Assume CI contexts are for branches
+  default = "branch"
+}
 variable "GITHUB_SHA" {
   // If not running in CI, assume local
   default = "local"
@@ -49,7 +53,7 @@ target "default" {
     "type=docker,name=${IMAGE_NAME}",
     // If running for an unprotected ref (e.g. PRs), append the commit SHA
     (
-      "${GITHUB_REF_PROTECTED}" == "true"
+      ("${GITHUB_REF_PROTECTED}" == "true" || "${GITHUB_REF_TYPE}" == "tag" )
       ? "type=registry,name=${IMAGE_REF}:${VERSION}"
       : "type=registry,name=${IMAGE_REF}:${VERSION}-${GITHUB_SHA}"
     )
