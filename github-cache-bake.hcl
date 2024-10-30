@@ -19,8 +19,8 @@ variable "GITHUB_REF_NAME" {
 }
 variable "VERSION" {
   // Default the version to the ref from CI, sanitized
-  // Replace any non-alphanumeric (or underscore) characters in the ref with dashes
-  default = regex_replace(GITHUB_REF_NAME, "[^a-zA-Z0-9_]", "-")
+  // Replace any non-alphanumeric, underscore, or dot characters in the ref with dashes
+  default = regex_replace(GITHUB_REF_NAME, "[^a-zA-Z0-9_.]", "-")
 }
 
 variable "IMAGE_NAME" {
