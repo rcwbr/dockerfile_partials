@@ -1,5 +1,3 @@
 #!/bin/bash
 
-echo Test
-
 PATH=$HOME/pre-commit-venv/bin:$PATH pre-commit $@
