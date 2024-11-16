@@ -16,4 +16,4 @@ DEVCONTAINER_DEFINITION_FILES="${devcontainer_definition_files_arr[@]}"
 export DEVCONTAINER_DEFINITION_FILES
 
 export DEVCONTAINER_BUILD_ADDITIONAL_ARGS="$@"
-curl https://raw.githubusercontent.com/rcwbr/devcontainer-cache-build/0.1.1/devcontainer-cache-build-initialize | bash
+curl https://raw.githubusercontent.com/rcwbr/devcontainer-cache-build/0.1.2/devcontainer-cache-build-initialize | bash
