@@ -47,7 +47,7 @@ target "default" {
     "type=registry,ref=${IMAGE_REF}-cache:${VERSION}"
   ]
   cache-to = [
-    "type=registry,ref=${IMAGE_REF}-cache:${VERSION}"
+    "type=registry,rewrite-timestamp=true,mode=max,ref=${IMAGE_REF}-cache:${VERSION}"
   ]
   output = [
     "type=docker,name=${IMAGE_NAME}",
