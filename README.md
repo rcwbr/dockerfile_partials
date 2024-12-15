@@ -19,14 +19,16 @@ docker builder create --use --bootstrap --driver docker-container
 The bake file requires at least `IMAGE_NAME` variable to be set, and `REGISTRY` should nearly always be overridden (see [GitHub cache bake file inputs](#github-cache-bake-file-inputs)). Export them:
 
 ```bash
-REGISTRY=ghcr.io/[your account]/
-IMAGE_NAME=[your repo/image name]
+REGISTRY=ghcr.io/[your account]
+IMAGE_NAME=[image name]
 ```
+
+By default, the `github-cache-bake.hcl` file expects a Dockerfile in the bake command execution directory (via `cwd://Dockerfile`), which is used for the build. It sets the default [`context`](https://docs.docker.com/build/bake/reference/#targetcontext) to `BAKE_CMD_CONTEXT` such that the filesystem local to the bake execution are available to the image build.
 
 To build your image using the GitHub cache bake file via [remote bake definition](https://docs.docker.com/build/bake/remote-definition/), run this command:
 
 ```bash
-'docker buildx bake --file github-cache-bake.hcl https://github.com/rcwbr/dockerfile-partials.git#0.1.0'
+REGISTRY=ghcr.io/[your account] IMAGE_NAME=[image name] docker buildx bake --file github-cache-bake.hcl https://github.com/rcwbr/dockerfile-partials.git#0.1.0
 ```
 
 ### GitHub cache bake file inputs
