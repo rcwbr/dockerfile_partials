@@ -35,7 +35,11 @@ variable "REGISTRY" {
   default = "ghcr.io/"
 }
 variable "IMAGE_REF" {
-  default = "${REGISTRY}${IMAGE_NAME}"
+  default = format(
+    "%s/%s",
+    trimsuffix(REGISTRY, "/"),
+    IMAGE_NAME
+  )
 }
 
 target "default" {
