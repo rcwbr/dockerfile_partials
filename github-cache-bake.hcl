@@ -35,12 +35,16 @@ variable "REGISTRY" {
   default = "ghcr.io/"
 }
 variable "IMAGE_REF" {
-  default = "${REGISTRY}${IMAGE_NAME}"
+  default = format(
+    "%s/%s",
+    trimsuffix(REGISTRY, "/"),
+    IMAGE_NAME
+  )
 }
 
 target "default" {
   dockerfile = "cwd://Dockerfile"
-  context = "."
+  context = BAKE_CMD_CONTEXT
   cache-from = [
     // Always pull cache from main
     "type=registry,ref=${IMAGE_REF}-cache:main",
