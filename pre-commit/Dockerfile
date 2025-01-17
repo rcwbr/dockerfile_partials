@@ -1,6 +1,7 @@
 # Set base_context in the downstream Bake file
 FROM base_context
 ARG USER=root
+# Assume root role for installs
 USER root
 # Install git to spoof pre-commit environment
 RUN DEBIAN_FRONTEND=noninteractive \
@@ -9,7 +10,6 @@ RUN DEBIAN_FRONTEND=noninteractive \
     git \
   && rm -rf /var/lib/apt/lists/*
 COPY pre-commit /usr/local/bin
-# Assume root role for installs
 USER ${USER}
 SHELL [ "/bin/bash", "-c" ]
 # Create a temp repo and install the hooks from the config
