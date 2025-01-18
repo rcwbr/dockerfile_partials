@@ -1,5 +1,5 @@
 # hadolint ignore=DL3006
-FROM docker_image as docker_image
+FROM docker_image AS docker_image
 
 # Set base_context in the downstream Bake file
 # hadolint ignore=DL3006
