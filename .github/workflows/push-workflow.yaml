@@ -53,8 +53,7 @@ jobs:
           docker run \
             --rm \
             -e CI=true \
-            -v $(pwd)/.dive-ci:/.dive-ci \
-            -w / \
+            -v $(pwd)/.dive-ci:/etc/.dive-ci \
             -v /var/run/docker.sock:/var/run/docker.sock \
             wagoodman/dive:v0.12.0 \
-            dockerfile-partials-all-layers
+            --ci-config /etc/.dive-ci dockerfile-partials-all-layers
