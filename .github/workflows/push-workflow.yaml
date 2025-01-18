@@ -14,3 +14,29 @@ jobs:
       release-it-image: ghcr.io/rcwbr/release-it-docker-file-bumper:0.7.0
     secrets:
       app-secret: ${{ secrets.RELEASE_IT_GITHUB_APP_KEY }} # Secret belonging to the Repo release environment
+  dive-efficiency:
+    name: Dive Docker image space efficiency analysis
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.7
+      - name: Build all-layers image
+        env:
+          DEVCONTAINER_DEFINITION_TYPE: bake
+          DEVCONTAINER_IMAGE: dockerfile-partials-all-layers
+          DEVCONTAINER_PUSH_IMAGE: false
+          DEVCONTAINER_REGISTRY: ghcr.io/rcwbr
+        run: |
+          devcontainer_definition_files_arr=(
+            devcontainer-bake.hcl
+            docker-client/devcontainer-bake.hcl
+            useradd/devcontainer-bake.hcl
+            pre-commit/devcontainer-bake.hcl
+            .github/workflows/.all-layers-image.hcl
+          )
+          DEVCONTAINER_DEFINITION_FILES="${devcontainer_definition_files_arr[*]}"
+          export DEVCONTAINER_DEFINITION_FILES
+          curl https://raw.githubusercontent.com/rcwbr/devcontainer-cache-build/0.3.0/devcontainer-cache-build-initialize | bash
+      - name: Dive analyze
+        run:
+          docker run --rm -e CI=true -v /var/run/docker.sock:/var/run/docker.sock wagoodman/dive:v0.12.0 dockerfile-partials-all-layers
