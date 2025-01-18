@@ -26,6 +26,9 @@ jobs:
           DEVCONTAINER_IMAGE: dockerfile-partials-all-layers
           DEVCONTAINER_PUSH_IMAGE: false
           DEVCONTAINER_REGISTRY: ghcr.io/rcwbr
+          DEVCONTAINER_CACHE_BUILD_OVERRIDE_USER: codespace
+          DEVCONTAINER_CACHE_BUILD_OVERRIDE_UID: 1000
+          DEVCONTAINER_CACHE_BUILD_OVERRIDE_USER_GID: 1000
         run: |
           devcontainer_definition_files_arr=(
             devcontainer-bake.hcl
