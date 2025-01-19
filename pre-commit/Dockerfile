@@ -4,15 +4,17 @@ FROM base_context
 ARG USER=root
 # Assume root role for installs
 USER root
-# Install git to spoof pre-commit environment
+# Install git (if not already available) to spoof pre-commit environment
+SHELL [ "/bin/bash", "-c" ]
 RUN DEBIAN_FRONTEND=noninteractive \
   apt-get update \
-  && apt-get install --allow-unauthenticated --no-install-recommends -y \
-    git=1:2.39.5* \
+  && if [[ ! dpkg-query --status git ]] ; then \
+    apt-get install --allow-unauthenticated --no-install-recommends -y \
+      git=1:2.39.5* ; \
+  fi \
   && rm -rf /var/lib/apt/lists/*
 COPY pre-commit /usr/local/bin
 USER ${USER}
-SHELL [ "/bin/bash", "-c" ]
 # Create a temp repo and install the hooks from the config
 # Load the config file from the downstream context
 # hadolint ignore=DL3003,SC1091
