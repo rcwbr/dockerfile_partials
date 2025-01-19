@@ -1,3 +1,6 @@
+# hadolint ignore=DL3006
+FROM common_context AS common_context
+
 # Set base_context in the downstream Bake file
 # hadolint ignore=DL3006
 FROM base_context
@@ -8,12 +11,12 @@ USER root
 SHELL [ "/bin/bash", "-c" ]
 RUN DEBIAN_FRONTEND=noninteractive \
   apt-get update \
-  && if [[ ! dpkg-query --status git ]] ; then \
+  && if ! dpkg-query --status git ; then \
     apt-get install --allow-unauthenticated --no-install-recommends -y \
       git=1:2.39.5* ; \
   fi \
   && rm -rf /var/lib/apt/lists/*
-COPY pre-commit /usr/local/bin
+COPY pre-commit/pre-commit /usr/local/bin
 USER ${USER}
 # Create a temp repo and install the hooks from the config
 # Load the config file from the downstream context
@@ -30,3 +33,7 @@ RUN \
   && pre-commit install-hooks \
   && cd \
   && rm -rf "$HOME/tmp_repo"
+
+COPY --from=common_context on_create_command /opt/devcontainers/on_create_command
+# Include pre-commit initialization in config for devcontainers onCreateCommand
+COPY pre-commit/on_create_command /opt/devcontainers/on_create_command
