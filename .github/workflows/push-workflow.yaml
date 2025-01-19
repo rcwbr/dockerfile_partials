@@ -43,7 +43,7 @@ jobs:
             docker-client/devcontainer-bake.hcl
             useradd/devcontainer-bake.hcl
             pre-commit/devcontainer-bake.hcl
-            .github/workflows/.all-layers-image.hcl
+            .github/workflows/all-layers-image.hcl
           )
           DEVCONTAINER_DEFINITION_FILES="${devcontainer_definition_files_arr[*]}"
           export DEVCONTAINER_DEFINITION_FILES
