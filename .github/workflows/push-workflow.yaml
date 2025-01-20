@@ -17,8 +17,9 @@ jobs:
   pre-commit:
     name: pre-commit
     runs-on: ubuntu-24.04
+    needs: devcontainer-cache-build
     container:
-      image: ${{ jobs.devcontainer-cache-build.outputs.devcontainer-cache-image }}
+      image: ${{ needs.devcontainer-cache-build.outputs.devcontainer-cache-image }}
     steps:
     - uses: actions/checkout@v4.1.7
     - uses: pre-commit/action@v3.0.1
