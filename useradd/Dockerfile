@@ -18,7 +18,9 @@ RUN DEBIAN_FRONTEND=noninteractive \
   && apt-get update \
   && apt-get install --allow-unauthenticated --no-install-recommends -y \
     sudo=1.9.13* \
-  && rm -rf /var/lib/apt/lists/*
+  && rm -rf /var/lib/apt/lists/* \
+  && echo $USER ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USER \
+  && chmod 0440 /etc/sudoers.d/$USER
 
 # Make use of the USER directive optional via target
 FROM base AS with_user
