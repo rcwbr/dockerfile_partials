@@ -14,6 +14,12 @@ jobs:
       release-it-image: ghcr.io/rcwbr/release-it-docker-file-bumper:0.7.0
     secrets:
       app-secret: ${{ secrets.RELEASE_IT_GITHUB_APP_KEY }} # Secret belonging to the Repo release environment
+  pre-commit:
+    name: pre-commit
+    runs-on: ubuntu-24.04
+    steps:
+    - uses: actions/checkout@v4.1.7
+    - uses: pre-commit/action@v3.0.1
   dive-efficiency:
     name: Dive Docker image space efficiency analysis
     runs-on: ubuntu-24.04

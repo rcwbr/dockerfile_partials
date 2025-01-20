@@ -14,6 +14,7 @@ for re-use across multiple applications.
       - [Devcontainer bake files devcontainer-cache-build initializeCommand config](#devcontainer-bake-files-devcontainer-cache-build-initializecommand-config)
       - [Devcontainer bake files devcontainer-cache-build .devcontainer/devcontainer-bake.hcl config](#devcontainer-bake-files-devcontainer-cache-build-devcontainerdevcontainer-bakehcl-config)
     - [Devcontainer bake files direct usage](#devcontainer-bake-files-direct-usage)
+  - [Devcontainer script integration](#devcontainer-script-integration)
   - [Dockerfile partials](#dockerfile-partials)
     - [docker-client](#docker-client)
       - [docker-client Dockerfile usage](#docker-client-dockerfile-usage)
@@ -177,6 +178,8 @@ The partial bake files may be used manually through a command like this:
 ```bash
 docker buildx bake --file devcontainer-bake.hcl [--file arg for each desired partial bake file] --file cwd://.devcontainer/devcontainer-bake.hcl https://github.com/rcwbr/dockerfile-partials.git#0.1.0
 ```
+
+## Devcontainer script integration<a name="devcontainer-script-integration"></a>
 
 ## Dockerfile partials<a name="dockerfile-partials"></a>
 
