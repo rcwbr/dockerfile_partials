@@ -2,7 +2,7 @@ name: Push workflow
 on: push
 jobs:
   devcontainer-cache-build:
-    uses: rcwbr/devcontainer-cache-build/.github/workflows/devcontainer-cache-build.yaml@0.3.0
+    uses: rcwbr/devcontainer-cache-build/.github/workflows/devcontainer-cache-build.yaml@17-add-output-from-the-ci-workflow
     permissions:
       packages: write
   release-it-workflow:
@@ -17,6 +17,8 @@ jobs:
   pre-commit:
     name: pre-commit
     runs-on: ubuntu-24.04
+    container:
+      image: ${{ jobs.devcontainer-cache-build.outputs.devcontainer-cache-image }}
     steps:
     - uses: actions/checkout@v4.1.7
     - uses: pre-commit/action@v3.0.1
