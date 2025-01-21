@@ -3,6 +3,8 @@ on: push
 jobs:
   devcontainer-cache-build:
     uses: rcwbr/devcontainer-cache-build/.github/workflows/devcontainer-cache-build.yaml@test/ci-output
+    with: # TODO remove
+      devcontainer-cache-build-image-override: ghcr.io/rcwbr/devcontainer-cache-build:test-ci-output-d599ce0d5e7637e6fea8d33c751089ce52f6ddd9
     permissions:
       packages: write
   release-it-workflow:
@@ -19,7 +21,7 @@ jobs:
     runs-on: ubuntu-24.04
     needs: devcontainer-cache-build
     container:
-      image: ${{ needs.devcontainer-cache-build.outputs.devcontainer-cache-image }}
+      image: ${{ needs.devcontainer-cache-build.outputs.devcontainer-cache-image.default.image.name }}
     steps:
       - uses: actions/checkout@v4.1.7
       - run: echo ${{ needs.devcontainer-cache-build.outputs.color-selector }}
