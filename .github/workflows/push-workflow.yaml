@@ -22,7 +22,7 @@ jobs:
       image: ${{ needs.devcontainer-cache-build.outputs.devcontainer-cache-image }}
     steps:
       - uses: actions/checkout@v4.1.7
-      - run: echo ${{ needs.devcontainer-cache-build.outputs.firstword }}
+      - run: echo ${{ needs.devcontainer-cache-build.outputs.color-selector }}
       - run: echo ${{ needs.devcontainer-cache-build.outputs.devcontainer-cache-image }}
       - run: pre-commit run --show-diff-on-failure --color=always
   dive-efficiency:
