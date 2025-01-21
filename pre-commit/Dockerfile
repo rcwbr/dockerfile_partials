@@ -15,6 +15,10 @@ RUN DEBIAN_FRONTEND=noninteractive \
     apt-get install --allow-unauthenticated --no-install-recommends -y \
       git=1:2.39.5* ; \
   fi \
+  && if ! dpkg-query --status locales ; then \
+    apt-get install --allow-unauthenticated --no-install-recommends -y \
+      locales=2.36* ; \
+  fi \
   && rm -rf /var/lib/apt/lists/*
 COPY pre-commit/pre-commit /usr/local/bin
 USER ${USER}
