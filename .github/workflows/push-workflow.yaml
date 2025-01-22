@@ -4,7 +4,7 @@ jobs:
   devcontainer-cache-build:
     uses: rcwbr/devcontainer-cache-build/.github/workflows/devcontainer-cache-build.yaml@test/ci-output
     with: # TODO remove
-      devcontainer-cache-build-image-override: ghcr.io/rcwbr/devcontainer-cache-build:test-ci-output-bc52a23d93af78b20ce6a7a3a09513aebff69de4
+      devcontainer-cache-build-image-override: ghcr.io/rcwbr/devcontainer-cache-build:test-ci-output-1819c66192353ccbdea07f0296147bac4070e76b
     permissions:
       packages: write
   release-it-workflow:
