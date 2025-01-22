@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-24.04
     needs: devcontainer-cache-build
     container:
-      image: ${{ needs.devcontainer-cache-build.outputs.devcontainer-cache-image-config-ref }}
+      image: ${{ needs.devcontainer-cache-build.outputs.devcontainer-cache-image-ref }}
     steps:
       - uses: actions/checkout@v4.1.7
       - run: echo ${{ needs.devcontainer-cache-build.outputs.color-selector }}
