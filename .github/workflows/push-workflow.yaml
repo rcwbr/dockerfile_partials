@@ -26,6 +26,7 @@ jobs:
       - uses: actions/checkout@v4.1.7
       - run: echo ${{ needs.devcontainer-cache-build.outputs.color-selector }}
       - run: echo ${{ needs.devcontainer-cache-build.outputs.devcontainer-cache-image-config }}
+      - run: echo ${{ needs.devcontainer-cache-build.outputs.devcontainer-cache-image-ref }}
       - run: pre-commit run --show-diff-on-failure --color=always
   dive-efficiency:
     name: Dive Docker image space efficiency analysis
