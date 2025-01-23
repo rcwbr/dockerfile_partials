@@ -25,10 +25,7 @@ jobs:
       options: --user root
     steps:
       - uses: actions/checkout@v4.1.7
-      - run: echo ${{ needs.devcontainer-cache-build.outputs.color-selector }}
-      - run: echo ${{ needs.devcontainer-cache-build.outputs.devcontainer-cache-image-config }}
-      - run: echo ${{ needs.devcontainer-cache-build.outputs.devcontainer-cache-image-ref }}
-      - run: pre-commit run --show-diff-on-failure --color=always
+      - run: pre-commit run --show-diff-on-failure --color=always --all-files
   dive-efficiency:
     name: Dive Docker image space efficiency analysis
     runs-on: ubuntu-24.04
