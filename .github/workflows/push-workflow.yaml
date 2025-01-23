@@ -2,9 +2,7 @@ name: Push workflow
 on: push
 jobs:
   devcontainer-cache-build:
-    uses: rcwbr/devcontainer-cache-build/.github/workflows/devcontainer-cache-build.yaml@test/ci-output
-    with: # TODO remove
-      devcontainer-cache-build-image-override: ghcr.io/rcwbr/devcontainer-cache-build:test-ci-output-8aba488de7e8c53a2950f2a97da2285ea188162d
+    uses: rcwbr/devcontainer-cache-build/.github/workflows/devcontainer-cache-build.yaml@0.4.0
     permissions:
       packages: write
   release-it-workflow:
