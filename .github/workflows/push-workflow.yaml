@@ -22,6 +22,7 @@ jobs:
     needs: devcontainer-cache-build
     container:
       image: ${{ needs.devcontainer-cache-build.outputs.devcontainer-cache-image-ref }}
+      options: --user root
     steps:
       - uses: actions/checkout@v4.1.7
       - run: echo ${{ needs.devcontainer-cache-build.outputs.color-selector }}
