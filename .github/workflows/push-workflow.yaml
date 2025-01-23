@@ -24,8 +24,11 @@ jobs:
       image: ${{ needs.devcontainer-cache-build.outputs.devcontainer-cache-image-ref }}
       options: --user root
     steps:
-      - uses: actions/checkout@v4.1.7
-      - run: pre-commit run --show-diff-on-failure --color=always --all-files
+      - name: Checkout
+        uses: actions/checkout@v4.1.7
+      - name: pre-commit
+        run: |
+          pre-commit run --show-diff-on-failure --color=always --all-files
   dive-efficiency:
     name: Dive Docker image space efficiency analysis
     runs-on: ubuntu-24.04
