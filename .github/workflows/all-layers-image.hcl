@@ -1,3 +1,5 @@
+// This image is used only to analyze image space efficiency in the CI pipeline
+
 variable "devcontainer_layers" {
   default = [
     "docker-client",
