@@ -26,6 +26,9 @@ jobs:
         uses: actions/checkout@v4.1.7
       - name: pre-commit
         run: |
+          pwd
+          ls -la
+          git status
           pre-commit run --verbose --show-diff-on-failure --color=always --all-files
   dive-efficiency:
     name: Dive Docker image space efficiency analysis
