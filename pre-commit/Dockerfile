@@ -22,7 +22,7 @@ RUN DEBIAN_FRONTEND=noninteractive \
   && rm -rf /var/lib/apt/lists/*
 
 # Prep folder for pre-commit
-ARG DEVCONTAINER_PRE_COMMIT=/opt/devcontainers/pre-commit
+ENV DEVCONTAINER_PRE_COMMIT=/opt/devcontainers/pre-commit
 RUN \
   mkdir -p "$DEVCONTAINER_PRE_COMMIT" \
   && chmod a+rx "$DEVCONTAINER_PRE_COMMIT" \
@@ -37,14 +37,14 @@ RUN \
   --mount=type=bind,from=local_context,source=.pre-commit-config.yaml,target=/tmp/.pre-commit-config.yaml \
   python -m venv "$DEVCONTAINER_PRE_COMMIT/venv" \
   && source "$DEVCONTAINER_PRE_COMMIT/venv/bin/activate" \
-  && mkdir "$HOME/tmp_repo" \
-  && cd "$HOME/tmp_repo" \
+  && mkdir "$DEVCONTAINER_PRE_COMMIT/tmp_repo" \
+  && cd "$DEVCONTAINER_PRE_COMMIT/tmp_repo" \
   && cp /tmp/.pre-commit-config.yaml . \
   && git init . \
   && pip install --no-cache-dir pre-commit==4.0.1 \
   && pre-commit install-hooks \
-  && cd \
-  && rm -rf "$HOME/tmp_repo"
+  && cd "$DEVCONTAINER_PRE_COMMIT" \
+  && rm -rf "$DEVCONTAINER_PRE_COMMIT/tmp_repo"
 
 COPY --from=common_context on_create_command /opt/devcontainers/on_create_command
 # Include pre-commit initialization in config for devcontainers onCreateCommand

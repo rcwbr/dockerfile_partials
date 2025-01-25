@@ -32,6 +32,8 @@ jobs:
           cat /usr/local/bin/pre-commit
           ls -la /opt/devcontainers/pre-commit/
           env
+          su codespace
+          ls -la
           git config --global --add safe.directory $GITHUB_WORKSPACE
           git status
           pre-commit run --verbose --show-diff-on-failure --color=always --all-files
