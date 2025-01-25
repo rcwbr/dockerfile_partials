@@ -20,6 +20,14 @@ RUN DEBIAN_FRONTEND=noninteractive \
       locales=2.36* ; \
   fi \
   && rm -rf /var/lib/apt/lists/*
+
+# Prep folder for pre-commit
+ARG DEVCONTAINER_PRE_COMMIT=/opt/devcontainers/pre-commit
+RUN \
+  mkdir -p "$DEVCONTAINER_PRE_COMMIT" \
+  && chmod a+rx "$DEVCONTAINER_PRE_COMMIT" \
+  && chown -R $USER:$USER "$DEVCONTAINER_PRE_COMMIT"
+# Apply spoof pre-commit executable
 COPY pre-commit/pre-commit /usr/local/bin
 USER ${USER}
 # Create a temp repo and install the hooks from the config
@@ -27,8 +35,8 @@ USER ${USER}
 # hadolint ignore=DL3003,SC1091
 RUN \
   --mount=type=bind,from=local_context,source=.pre-commit-config.yaml,target=/tmp/.pre-commit-config.yaml \
-  python -m venv "$HOME/pre-commit-venv" \
-  && source "$HOME/pre-commit-venv/bin/activate" \
+  python -m venv "$DEVCONTAINER_PRE_COMMIT/venv" \
+  && source "$DEVCONTAINER_PRE_COMMIT/venv/bin/activate" \
   && mkdir "$HOME/tmp_repo" \
   && cd "$HOME/tmp_repo" \
   && cp /tmp/.pre-commit-config.yaml . \
