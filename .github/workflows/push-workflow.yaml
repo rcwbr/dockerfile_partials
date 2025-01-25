@@ -28,6 +28,7 @@ jobs:
         run: |
           pwd
           ls -la
+          git config --global --add safe.directory $GITHUB_WORKSPACE
           git status
           pre-commit run --verbose --show-diff-on-failure --color=always --all-files
   dive-efficiency:
