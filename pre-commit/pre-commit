@@ -4,4 +4,4 @@ echo "Pre-commit!"
 echo "$@"
 echo "Calling..."
 
-PATH=$HOME/pre-commit-venv/bin:$PATH pre-commit "$@"
+PATH="$HOME/pre-commit-venv/bin:$PATH" "$HOME/pre-commit-venv/bin/pre-commit" "$@"
