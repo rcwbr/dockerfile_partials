@@ -26,10 +26,12 @@ jobs:
         run: |
           sudo mkdir -p "$GITHUB_WORKSPACE"
           sudo chown -R codespace:codespace "$GITHUB_WORKSPACE"
+          echo "$GITHUB_WORKSPACE"
       - name: Checkout
         uses: actions/checkout@v4.1.7
       - name: pre-commit
         run: |
+          echo "$GITHUB_WORKSPACE"
           pwd
           ls -la
           which pre-commit
