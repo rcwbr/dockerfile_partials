@@ -32,7 +32,8 @@ jobs:
           cat /usr/local/bin/pre-commit
           ls -la /opt/devcontainers/pre-commit/
           env
-          su codespace -c 'bash <<EOF
+          chown -R codespace:codespace "$GITHUB_WORKSPACE"
+          su -p codespace -c 'bash <<EOF
             git config --global --add safe.directory $GITHUB_WORKSPACE
             ls -la
             git status
