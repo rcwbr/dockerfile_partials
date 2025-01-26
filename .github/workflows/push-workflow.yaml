@@ -32,10 +32,13 @@ jobs:
           cat /usr/local/bin/pre-commit
           ls -la /opt/devcontainers/pre-commit/
           env
-          su -c "git config --global --add safe.directory $GITHUB_WORKSPACE" - codespace
-          su -c "ls -la" - codespace
-          su -c "git status" - codespace
-          su -c "pre-commit run --verbose --show-diff-on-failure --color=always --all-files" - codespace
+          su codespace -c 'bash <<EOF
+            git config --global --add safe.directory $GITHUB_WORKSPACE
+            ls -la
+            git status
+            pre-commit run --verbose --show-diff-on-failure --color=always --all-files
+          EOF
+          '
   dive-efficiency:
     name: Dive Docker image space efficiency analysis
     runs-on: ubuntu-24.04
