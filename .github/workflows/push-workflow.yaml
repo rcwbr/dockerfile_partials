@@ -20,8 +20,12 @@ jobs:
     needs: devcontainer-cache-build
     container:
       image: ${{ needs.devcontainer-cache-build.outputs.devcontainer-cache-image-ref }}
-      options: --user root
+      options: --user codespace
     steps:
+      - name: Prep directory
+        run: |
+          sudo mkdir -p "$GITHUB_WORKSPACE"
+          sudo chown -R codespace:codespace "$GITHUB_WORKSPACE"
       - name: Checkout
         uses: actions/checkout@v4.1.7
       - name: pre-commit
@@ -32,14 +36,10 @@ jobs:
           cat /usr/local/bin/pre-commit
           ls -la /opt/devcontainers/pre-commit/
           env
-          chown -R codespace:codespace "$GITHUB_WORKSPACE"
-          su codespace -c 'bash <<EOF
-            git config --global --add safe.directory $GITHUB_WORKSPACE
-            ls -la
-            git status
-            pre-commit run --verbose --show-diff-on-failure --color=always --all-files
-          EOF
-          '
+          git config --global --add safe.directory $GITHUB_WORKSPACE
+          ls -la
+          git status
+          pre-commit run --verbose --show-diff-on-failure --color=always --all-files
   dive-efficiency:
     name: Dive Docker image space efficiency analysis
     runs-on: ubuntu-24.04
