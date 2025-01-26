@@ -17,15 +17,17 @@ jobs:
   pre-commit:
     name: pre-commit
     runs-on: ubuntu-24.04
-    needs: devcontainer-cache-build
+    # needs: devcontainer-cache-build
+    # TODO revert
     container:
-      image: ${{ needs.devcontainer-cache-build.outputs.devcontainer-cache-image-ref }}
+      # image: ${{ needs.devcontainer-cache-build.outputs.devcontainer-cache-image-ref }}
+      image: ghcr.io/rcwbr/dockerfile-partials-devcontainer:6-apply-pre-commit-with-hadolint # TODO revert
       options: --user codespace
     steps:
       - name: Prep directory
         run: |
           sudo mkdir -p "$GITHUB_WORKSPACE"
-          sudo chown -R codespace:codespace "$GITHUB_WORKSPACE"
+          sudo chown -R codespace:codespace /__w
           echo "$GITHUB_WORKSPACE"
       - name: Checkout
         uses: actions/checkout@v4.1.7
