@@ -1,3 +1,19 @@
 #!/bin/bash
 
-PATH="$DEVCONTAINER_PRE_COMMIT/venv/bin:$PATH" "$DEVCONTAINER_PRE_COMMIT/venv/bin/pre-commit" "$@"
+set -e
+
+export PRE_COMMIT_ARGS=($@)
+docker run \
+  --rm \
+  -it \
+  --name pre-commit \
+  --user root \
+  --entrypoint bash \
+  -v "$(pwd):$(pwd)" \
+  -w "$(pwd)" \
+  -e DEVCONTAINER_PRE_COMMIT \
+  -e PRE_COMMIT_ARGS \
+  "$DEVCONTAINER_PRE_COMMIT_IMAGE" \
+  -c 'git config --global --add safe.directory "$(pwd)" && PATH="$DEVCONTAINER_PRE_COMMIT/venv/bin:$PATH" "$DEVCONTAINER_PRE_COMMIT/venv/bin/pre-commit" "${PRE_COMMIT_ARGS[@]}"'
+
+sudo chown -R $USER:$USER $(pwd)

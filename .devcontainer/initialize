@@ -16,4 +16,6 @@ devcontainer_definition_files_arr=(
 DEVCONTAINER_DEFINITION_FILES="${devcontainer_definition_files_arr[*]}"
 export DEVCONTAINER_DEFINITION_FILES
 export DEVCONTAINER_BUILD_ADDITIONAL_ARGS="$*"
-curl https://raw.githubusercontent.com/rcwbr/devcontainer-cache-build/0.4.0/devcontainer-cache-build-initialize | bash
+# curl https://raw.githubusercontent.com/rcwbr/devcontainer-cache-build/0.4.0/devcontainer-cache-build-initialize | bash
+# DEVCONTAINER_CACHE_BUILD_IMAGE=ghcr.io/rcwbr/devcontainer-cache-build:19-fix-handling-of-empty-target-outputs-b4767c26dfddada604ed9539bddc5d4c47042ad4
+curl https://raw.githubusercontent.com/rcwbr/devcontainer-cache-build/test/19/devcontainer-cache-build-initialize | bash # TODO revert

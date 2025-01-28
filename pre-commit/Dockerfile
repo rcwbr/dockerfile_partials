@@ -1,11 +1,7 @@
-# hadolint ignore=DL3006
-FROM common_context AS common_context
-
 # Set base_context in the downstream Bake file
 # hadolint ignore=DL3006
 FROM base_context
-ARG USER=root
-# Assume root role for installs
+# Act as root in this image
 USER root
 # Install git (if not already available) to spoof pre-commit environment
 SHELL [ "/bin/bash", "-c" ]
@@ -23,19 +19,13 @@ RUN DEBIAN_FRONTEND=noninteractive \
 
 # Prep folder for pre-commit
 ENV DEVCONTAINER_PRE_COMMIT=/opt/devcontainers/pre-commit
-RUN \
-  mkdir -p "$DEVCONTAINER_PRE_COMMIT" \
-  && chmod a+rx "$DEVCONTAINER_PRE_COMMIT" \
-  && chown -R $USER:$USER "$DEVCONTAINER_PRE_COMMIT"
-# Apply spoof pre-commit executable
-COPY pre-commit/pre-commit /usr/local/bin
-USER ${USER}
 # Create a temp repo and install the hooks from the config
 # Load the config file from the downstream context
 # hadolint ignore=DL3003,SC1091
 RUN \
   --mount=type=bind,from=local_context,source=.pre-commit-config.yaml,target=/tmp/.pre-commit-config.yaml \
-  python -m venv "$DEVCONTAINER_PRE_COMMIT/venv" \
+  mkdir -p "$DEVCONTAINER_PRE_COMMIT" \
+  && python -m venv "$DEVCONTAINER_PRE_COMMIT/venv" \
   && source "$DEVCONTAINER_PRE_COMMIT/venv/bin/activate" \
   && mkdir "$DEVCONTAINER_PRE_COMMIT/tmp_repo" \
   && cd "$DEVCONTAINER_PRE_COMMIT/tmp_repo" \
@@ -45,7 +35,3 @@ RUN \
   && pre-commit install-hooks \
   && cd "$DEVCONTAINER_PRE_COMMIT" \
   && rm -rf "$DEVCONTAINER_PRE_COMMIT/tmp_repo"
-
-COPY --from=common_context on_create_command /opt/devcontainers/on_create_command
-# Include pre-commit initialization in config for devcontainers onCreateCommand
-COPY pre-commit/on_create_command /opt/devcontainers/on_create_command

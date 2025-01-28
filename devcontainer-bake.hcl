@@ -52,6 +52,5 @@ target "layer" {
 }
 
 group "default" {
-  // Target the last layer as default
-  targets = [devcontainer_layers[length(devcontainer_layers) - 1]]
+  targets = devcontainer_layers
 }
