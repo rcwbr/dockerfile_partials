@@ -10,8 +10,11 @@ variable "DEVCONTAINER_IMAGE" {
 variable "GIT_BRANCH_SANITIZED" {
   default = ""
 }
-variable "PRE_COMMIT_TOOL_IMAGE" {
-  default = "type=registry,name=${DEVCONTAINER_REGISTRY}/${DEVCONTAINER_IMAGE}-pre-commit:${GIT_BRANCH_SANITIZED}"
+variable "PRE_COMMIT_TOOL_IMAGE_NAME" {
+  default = "${DEVCONTAINER_REGISTRY}/${DEVCONTAINER_IMAGE}-pre-commit:${GIT_BRANCH_SANITIZED}"
+}
+variable "PRE_COMMIT_TOOL_IMAGE_OUTPUT" {
+  default = "type=registry,name=${PRE_COMMIT_TOOL_IMAGE_NAME}"
 }
 
 target "pre-commit-base" {
@@ -24,7 +27,7 @@ target "pre-commit-tool-image" {
     local_context = BAKE_CMD_CONTEXT
     base_context  = "target:pre-commit-base"
   }
-  output = ["${PRE_COMMIT_TOOL_IMAGE}"]
+  output = ["${PRE_COMMIT_TOOL_IMAGE_OUTPUT}"]
 }
 
 target "pre-commit" {
@@ -38,6 +41,6 @@ target "pre-commit" {
   }
   args = {
     USER = "${USER}"
-    DEVCONTAINER_PRE_COMMIT_IMAGE = "${PRE_COMMIT_TOOL_IMAGE}"
+    DEVCONTAINER_PRE_COMMIT_IMAGE = "${PRE_COMMIT_TOOL_IMAGE_NAME}"
   }
 }
