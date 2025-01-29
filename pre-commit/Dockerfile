@@ -21,6 +21,7 @@ RUN DEBIAN_FRONTEND=noninteractive \
 ENV DEVCONTAINER_PRE_COMMIT=/opt/devcontainers/pre-commit
 # Apply wrapper executable
 RUN echo 'PATH="$DEVCONTAINER_PRE_COMMIT/venv/bin:$PATH" "$DEVCONTAINER_PRE_COMMIT/venv/bin/pre-commit" "$@"' > /usr/local/bin/pre-commit
+RUN chmod a+x /usr/local/bin/pre-commit
 # Create a temp repo and install the hooks from the config
 # Load the config file from the downstream context
 # hadolint ignore=DL3003,SC1091
