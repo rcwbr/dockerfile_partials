@@ -16,4 +16,5 @@ devcontainer_definition_files_arr=(
 DEVCONTAINER_DEFINITION_FILES="${devcontainer_definition_files_arr[*]}"
 export DEVCONTAINER_DEFINITION_FILES
 export DEVCONTAINER_BUILD_ADDITIONAL_ARGS="$*"
+export DEVCONTAINER_CACHE_BUILD_IMAGE=ghcr.io/rcwbr/devcontainer-cache-build:21-output-all-bake-config-layers-to-github-c7ef615955cd3805c8b9fb4cfcb5479b7822a7b6 # TODO revert
 curl https://raw.githubusercontent.com/rcwbr/devcontainer-cache-build/0.5.0/devcontainer-cache-build-initialize | bash
