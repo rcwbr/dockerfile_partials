@@ -7,8 +7,11 @@ variable "DEVCONTAINER_REGISTRY" {
 variable "DEVCONTAINER_IMAGE" {
   default = ""
 }
+variable "GIT_BRANCH_SANITIZED" {
+  default = ""
+}
 variable "PRE_COMMIT_TOOL_IMAGE" {
-  default = "type=registry,name=${DEVCONTAINER_REGISTRY}:${DEVCONTAINER_IMAGE}-pre-commit"
+  default = "type=registry,name=${DEVCONTAINER_REGISTRY}/${DEVCONTAINER_IMAGE}-pre-commit:${GIT_BRANCH_SANITIZED}"
 }
 
 target "pre-commit-base" {
