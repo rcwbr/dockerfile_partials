@@ -2,7 +2,7 @@ name: Push workflow
 on: push
 jobs:
   devcontainer-cache-build:
-    uses: rcwbr/devcontainer-cache-build/.github/workflows/devcontainer-cache-build.yaml@0.4.0
+    uses: rcwbr/devcontainer-cache-build/.github/workflows/devcontainer-cache-build.yaml@0.5.0
     permissions:
       packages: write
   release-it-workflow:
@@ -21,19 +21,12 @@ jobs:
     # TODO revert
     container:
       # image: ${{ needs.devcontainer-cache-build.outputs.devcontainer-cache-image-ref }}
-      image: ghcr.io/rcwbr/dockerfile-partials-devcontainer:6-apply-pre-commit-with-hadolint # TODO revert
-      options: --user codespace
+      image: ghcr.io/rcwbr/dockerfile-partials-devcontainer-pre-commit:6-apply-pre-commit-with-hadolint # TODO revert
     steps:
-      - name: Prep directory
-        run: |
-          sudo mkdir -p "$GITHUB_WORKSPACE"
-          sudo chown -R codespace:codespace /__w
-          echo "$GITHUB_WORKSPACE"
       - name: Checkout
         uses: actions/checkout@v4.1.7
       - name: pre-commit
         run: |
-          echo "$GITHUB_WORKSPACE"
           pwd
           ls -la
           which pre-commit
@@ -41,7 +34,6 @@ jobs:
           ls -la /opt/devcontainers/pre-commit/
           env
           git config --global --add safe.directory $GITHUB_WORKSPACE
-          ls -la
           git status
           pre-commit run --verbose --show-diff-on-failure --color=always --all-files
   dive-efficiency:
