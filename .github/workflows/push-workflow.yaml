@@ -4,6 +4,8 @@ jobs:
   devcontainer-cache-build:
     # uses: rcwbr/devcontainer-cache-build/.github/workflows/devcontainer-cache-build.yaml@0.5.0
     uses: rcwbr/devcontainer-cache-build/.github/workflows/devcontainer-cache-build.yaml@21-output-all-bake-config-layers-to-github # TODO revert
+    with:
+      devcontainer-cache-build-image-override: ghcr.io/rcwbr/devcontainer-cache-build:21-output-all-bake-config-layers-to-github-c7ef615955cd3805c8b9fb4cfcb5479b7822a7b6
     permissions:
       packages: write
   release-it-workflow:
