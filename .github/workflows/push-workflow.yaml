@@ -29,6 +29,8 @@ jobs:
       - name: pre-commit
         run: |
           whoami
+          which pre-commit
+          cat $(which pre-commit)
           git config --global --add safe.directory $GITHUB_WORKSPACE
           pre-commit run --show-diff-on-failure --color=always --all-files
   dive-efficiency:
