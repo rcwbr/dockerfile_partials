@@ -1,0 +1,58 @@
+repos:
+# Using local hook to pin hadolint image version until resolution of https://github.com/hadolint/hadolint/issues/921
+# - repo: https://github.com/hadolint/hadolint
+#   rev: v2.12.0
+#   hooks:
+#     - id: hadolint-docker
+- repo: https://github.com/executablebooks/mdformat
+  rev: 0.7.17
+  hooks:
+  - id: mdformat
+    additional_dependencies:
+    - mdformat-black
+    - mdformat-config
+    - mdformat-gfm-alerts
+    - mdformat-shfmt
+    - mdformat-tables
+    - mdformat-toc
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v5.0.0
+  hooks:
+  - id: check-added-large-files
+  - id: check-case-conflict
+  - id: check-executables-have-shebangs
+  - id: check-json
+  - id: check-merge-conflict
+  - id: check-shebang-scripts-are-executable
+  - id: check-symlinks
+  - id: check-toml
+  - id: check-vcs-permalinks
+  - id: check-yaml
+  - id: detect-private-key
+  - id: double-quote-string-fixer
+  - id: end-of-file-fixer
+  - id: forbid-submodules
+  - id: mixed-line-ending
+  - id: pretty-format-json
+    args: [--autofix]
+  - id: sort-simple-yaml
+    files: .pre-commit-config.yaml
+  - id: trailing-whitespace
+# HCL files are for Docker Bake, but formatting/linting tools only exist in the TF ecosystem
+- repo: local
+  hooks:
+  - id: hclfmt
+    name: hclfmt
+    language: docker_image
+    entry: alpine/terragrunt:1.10.3 terragrunt hclfmt
+    types: ["hcl"]
+  - id: hadolint-docker
+    name: Lint Dockerfiles
+    description: Runs hadolint Docker image to lint Dockerfiles
+    language: docker_image
+    types: ["dockerfile"]
+    entry: ghcr.io/hadolint/hadolint:2.12.0 hadolint
+- repo: https://github.com/shellcheck-py/shellcheck-py
+  rev: v0.10.0.1
+  hooks:
+  - id: shellcheck
