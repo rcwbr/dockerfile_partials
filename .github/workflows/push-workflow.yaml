@@ -22,12 +22,13 @@ jobs:
     runs-on: ubuntu-24.04
     needs: devcontainer-cache-build
     container:
-      image: ${{ fromJSON(needs.devcontainer-cache-build.outputs.devcontainer-cache-image-all_configs)["target"]["pre-commit"]["args"]["DEVCONTAINER_PRE_COMMIT_IMAGE"] }}
+      image: ${{ fromJSON(needs.devcontainer-cache-build.outputs.devcontainer-cache-image-all_configs)['target']['pre-commit']['args']['DEVCONTAINER_PRE_COMMIT_IMAGE'] }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4.1.7
       - name: pre-commit
         run: |
+          echo ${{ fromJSON(needs.devcontainer-cache-build.outputs.devcontainer-cache-image-all_configs)["target"]["pre-commit"]["args"]["DEVCONTAINER_PRE_COMMIT_IMAGE"] }}
           pwd
           ls -la
           which pre-commit
