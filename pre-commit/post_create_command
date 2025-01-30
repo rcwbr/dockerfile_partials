@@ -1,0 +1,3 @@
+#!/bin/bash
+
+docker pull "$DEVCONTAINER_PRE_COMMIT_IMAGE"
