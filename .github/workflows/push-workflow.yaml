@@ -20,7 +20,7 @@ jobs:
   pre-commit:
     name: pre-commit
     runs-on: ubuntu-24.04
-    # needs: devcontainer-cache-build
+    needs: devcontainer-cache-build
     # TODO revert
     container:
       # image: ${{ needs.devcontainer-cache-build.outputs.devcontainer-cache-image-ref }}
