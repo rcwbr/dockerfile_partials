@@ -122,11 +122,16 @@ This allows it to consume contents of the downstream build context.
 ### Devcontainer bake files devcontainer-cache-build usage<a name="devcontainer-bake-files-devcontainer-cache-build-usage"></a>
 
 In a `devcontainer.json` leveraging the
-[devcontainer-cache-build initialize script](https://github.com/rcwbr/devcontainer-cache-build/tree/main?tab=readme-ov-file#initialize-script),
-add the following configuration to the script called by `initializeCommand` before the `curl` to the
-initialize script:
+[devcontainer-cache-build initialize script](https://github.com/rcwbr/devcontainer-cache-build/tree/main?tab=readme-ov-file#initialize-script), several fields must be configured to fully integrate. These include:
+
+1. The `initializeCommand` (see [Devcontainer bake files devcontainer-cache-build initializeCommand config](#devcontainer-bake-files-devcontainer-cache-build-initializecommand-config))
+1. For some images, such as [pre-commit](#pre-commit), map `onCreateCommand` to `"/opt/devcontainers/on_create_command"`
+1. For some images, such as [pre-commit](#pre-commit), map `postCreateCommand` to `"/opt/devcontainers/post_create_command"`
 
 #### Devcontainer bake files devcontainer-cache-build initializeCommand config<a name="devcontainer-bake-files-devcontainer-cache-build-initializecommand-config"></a>
+
+Add the following configuration to the script called by `initializeCommand` before the `curl` to the
+initialize script:
 
 ```bash
 # .devcontainer/initialize
@@ -249,6 +254,8 @@ must be included:
 
 The pre-commit Dockerfile defines steps to install [pre-commit](https://pre-commit.com/) and install
 the hooks required by a repo configuration.
+
+TODO: describe tool image architecture
 
 #### pre-commit Dockerfile usage<a name="pre-commit-dockerfile-usage"></a>
 

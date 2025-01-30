@@ -14,6 +14,8 @@
     }
   ],
   "name": "dockerfile-partials",
+  "onCreateCommand": "/opt/devcontainers/on_create_command",
+  "postCreateCommand": "/opt/devcontainers/post_create_command",
   "secrets": {
     "DOCKERFILE_PARTIALS_DEVCONTAINER_INITIALIZE": {
       "description": "GitHub personal access token with `write:packages` scope to pull and push devcontainer image cache",
