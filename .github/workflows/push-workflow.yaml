@@ -21,17 +21,13 @@ jobs:
     name: pre-commit
     runs-on: ubuntu-24.04
     needs: devcontainer-cache-build
-    # TODO revert
     container:
-      # image: ${{ needs.devcontainer-cache-build.outputs.devcontainer-cache-image-ref }}
-      image: ghcr.io/rcwbr/dockerfile-partials-devcontainer-pre-commit:6-apply-pre-commit-with-hadolint # TODO revert
+      image: ${{ fromJSON(needs.devcontainer-cache-build.outputs.devcontainer-cache-image-all_configs)["target"]["pre-commit"]["args"]["DEVCONTAINER_PRE_COMMIT_IMAGE"] }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4.1.7
       - name: pre-commit
         run: |
-          echo "${{ fromJSON(needs.devcontainer-cache-build.outputs.devcontainer-cache-image-all_configs)['target']['pre-commit-tool-image']['output'][0] }}"
-          echo "${{ fromJSON(needs.devcontainer-cache-build.outputs.devcontainer-cache-image-all_configs)['target']['pre-commit']['args']['DEVCONTAINER_PRE_COMMIT_IMAGE'] }}"
           pwd
           ls -la
           which pre-commit
