@@ -30,6 +30,7 @@ jobs:
         uses: actions/checkout@v4.1.7
       - name: pre-commit
         run: |
+          echo "${{ needs.devcontainer-cache-build.outputs.devcontainer-cache-image-config }}"
           echo "${{ needs.devcontainer-cache-build.outputs.devcontainer-cache-image-all_configs }}"
           pwd
           ls -la
